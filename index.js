@@ -3,8 +3,23 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const fileLoc = "./output/README.md";
 const generateMarkdown = require("./utils/generateMarkdown.js");
-
 // TODO: Create an array of questions for user input
+const licenseList = [
+  "none",
+  "Apache License 2.0",
+  "Boost Software License 1.0",
+  'BSD 2-Clause "Simplified" License',
+  'BSD 3-Clause "New" or "Revised" License',
+  "Creative Commons Zero v1.0 Universal",
+  "Eclipse Public License 2.0",
+  "GNU Affero General Public License v3.0",
+  "GNU General Public License v2.0",
+  "GNU General Public License v3.0",
+  "GNU Lesser General Public License v2.1",
+  "MIT License",
+  "Mozilla Public License 2.0",
+  "The Unlicense",
+];
 const questions = [
   { type: "input", message: "What is the title of this app?", name: "title" },
   {
@@ -32,7 +47,7 @@ const questions = [
     type: "list",
     message: "Please choose the license for this app:",
     name: "license",
-    choices: ["MIT", "Flink", "DoinkLicense"],
+    choices: licenseList,
   },
   {
     type: "input",
@@ -53,6 +68,16 @@ const questions = [
     type: "input",
     message: "Please enter email for contact info:",
     name: "questionsEmail",
+  },
+];
+
+const blankTemplateWanted = [
+  {
+    type: "list",
+    message:
+      "Would you like to generate a blank template file to edit in a separate editor, or enter information directly here?",
+    choices: ["Generate Blank Template", "Enter Information Here"],
+    name: "blankTemplate",
   },
 ];
 
@@ -82,9 +107,17 @@ function init() {
     "To skip any section, simply hit 'enter' without entering any info\n",
     "You may press ctrl+c at any time to exit and discard all changes.\n"
   );
-  inquirer.prompt(questions).then((ans) => {
-    let readmeText = generateMarkdown.generateMarkdown(ans);
-    writeToFile("./output/README.md", readmeText);
+  inquirer.prompt(blankTemplateWanted).then((ans) => {
+    if (ans.blankTemplate === "Generate Blank Template") {
+      console.log(":Entered blank path");
+      let readmeText = generateMarkdown.generateMarkdown("", true);
+      writeToFile("./output/README.md", readmeText);
+    } else {
+      inquirer.prompt(questions).then((ans) => {
+        let readmeText = generateMarkdown.generateMarkdown(ans, false);
+        writeToFile("./output/README.md", readmeText);
+      });
+    }
   });
 }
 
