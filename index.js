@@ -32,15 +32,29 @@ const questions = [
     type: "list",
     message: "Please choose the license for this app:",
     name: "license",
-    choices: ["MIT, Flink", "DoinkLicense"],
+    choices: ["MIT", "Flink", "DoinkLicense"],
   },
-  //   ["Please give guidlines contribution to this app:", name: "contributing"],
-  //   ["Please give information on tests:", name: "tests"],
-  //   ["Please enter github profile", name: "questionsGithub"],
-  //   ["Please enter email for questions:", name: "questionsEmail"],
+  {
+    type: "input",
+    message: "Please give contribution guidlines to this app:",
+    name: "guidlines",
+  },
+  {
+    type: "input",
+    message: "Please give information on tests:",
+    name: "tests",
+  },
+  {
+    type: "input",
+    message: "Please enter github username for contact info:",
+    name: "questionsGithub",
+  },
+  {
+    type: "input",
+    message: "Please enter email for contact info:",
+    name: "questionsEmail",
+  },
 ];
-
-var answers;
 
 /*Need to get:
 Title (might be done with repository creation already)
@@ -55,12 +69,14 @@ questions
 */
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) =>
+    err ? console.error(err) : console.log("Writing successful")
+  );
+}
 
 // TODO: Create a function to initialize app
 function init() {
-  var promptArray = []; //This will be given to inquirer.prompt
-  answers = []; //initialize array
   console.log(
     "\n\nWelcome! You are going to be asked a series of questions to build a readme file.\n",
     "To skip any section, simply hit 'enter' without entering any info\n",
@@ -68,11 +84,8 @@ function init() {
   );
   inquirer.prompt(questions).then((ans) => {
     let readmeText = generateMarkdown.generateMarkdown(ans);
-    fs.writeFile("./output/README.md", readmeText, (err) =>
-      err ? console.error(err) : console.log("Success!")
-    );
+    writeToFile("./output/README.md", readmeText);
   });
-  //   console.log("blorp");
 }
 
 // Function call to initialize app

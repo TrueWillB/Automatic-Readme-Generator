@@ -15,6 +15,11 @@ function constructTOC(data) {
   var tocOutput = "\n## TOC goes right here\n";
   return tocOutput;
 }
+
+//TODO build function that completes github profile url based on name passed to it
+function getGithubProfileURL(profile) {
+  return profile;
+}
 function generateMarkdown(data) {
   console.log(data);
 
@@ -26,15 +31,21 @@ function generateMarkdown(data) {
   if (data.toc == "Yes") {
     readmeText += constructTOC(data);
   }
-  readmeText += `\n## Description\n${data.description}\n`;
-  readmeText += `\n## Installation\n${data.installation}\n`;
-  readmeText += `\n## Usage\n${data.usage}\n`;
+  readmeText += `\n## Description\n${data.description}\n<br/><br/>`;
+  readmeText += `\n## Installation\n${data.installation}\n<br/><br/>`;
+  readmeText += `\n## Usage\n${data.usage}\n<br/><br/>`;
+  readmeText += `\n## Guidlines for Contributions\n${data.guidlines}<br/><br/>`;
+  readmeText += `\n## Tests\n${data.tests}<br/><br/>`;
+  readmeText += `\n## Questions?\n You can contact me with questions in the following places:<br/>`;
+  //prettier-ignore
+  if (data.questionsGithub != "") {
+    readmeText += `\nGithub Profile: ${getGithubProfileURL(data.questionsGithub)}<br/>`;
+  }
+  if (data.questionsEmail != "") {
+    readmeText += `\nEmail: ${data.questionsEmail}<br/>`;
+  }
 
   return readmeText;
-
-  //   return `# ${data.title}
-
-  // `;
 }
 
 module.exports = { generateMarkdown };

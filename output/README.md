@@ -1,12 +1,21 @@
-# Title
+# s
 
 ## TOC goes right here
 
 ## Description
-Here is a description
-
+s
+<br/><br/>
 ## Installation
-Install it by loading it
-
+s
+<br/><br/>
 ## Usage
-Use it wisely
+s
+<br/><br/>
+## Guidlines for Contributions
+s<br/><br/>
+## Tests
+s<br/><br/>
+## Questions?
+ You can contact me with questions in the following places:<br/><br/>
+Github Profile: s<br/>
+Email: s<br/>
