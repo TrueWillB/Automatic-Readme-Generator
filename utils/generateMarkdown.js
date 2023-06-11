@@ -47,5 +47,5 @@ function generateMarkdown(data) {
 
   return readmeText;
 }
-
+//Exports any needed functions for use elsewhere
 module.exports = { generateMarkdown };
