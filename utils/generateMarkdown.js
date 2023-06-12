@@ -1,6 +1,3 @@
-// TODO: Create a function that returns a license badge based on which license is passed in
-// If there is no license, return an empty string
-
 //An ugly ugly switch statement, but very understandable. It just takes the license choice of the user and returns the badge formatting
 function renderLicenseBadge(license) {
   switch (license) {
@@ -37,14 +34,7 @@ function renderLicenseBadge(license) {
   }
 }
 
-// TODO: Create a function that returns the license link
 // If there is no license, return an empty string
-function renderLicenseLink(license) {
-  return "https://www.google.com";
-}
-
-// If there is no license, return an empty string
-//Prettier extension was really making this section unreadable
 function renderLicenseSection(license) {
   var licenseText;
   licenseText = `\n## License\n This repo and all of its contents operate under ${license}. For details, please view the LICENSE file in the repository or click the badge: ${renderLicenseBadge(
@@ -55,7 +45,6 @@ function renderLicenseSection(license) {
 
 //This section dynamically generates the TOC from whatever sections the user included
 function constructTOC(data) {
-  console.log("building TOC");
   var tocOutput = "";
   for (const section of data) {
     tocOutput += `- [${section}](#${section.toLowerCase()})\n`;
@@ -63,19 +52,17 @@ function constructTOC(data) {
   return tocOutput;
 }
 
-//TODO build function that completes github profile url based on name passed to it
+//This fucntion builds the profile name from the name provided by the user
 function getGithubProfileURL(profile) {
+  profile = `https://github.com/${profile}`;
   return profile;
 }
 function generateMarkdown(data, blankTemplate) {
-  console.log(data);
-
-  //TODO REWORK CODE TO WRITE ENTIRE FILE ALL IN ONE GO, DO NOT USE APPENDS============================================
   //I purposely made the text of the readme in this strange appending fashion so that I can come back and individually change each section later if I so desire.
   //I am aware that the code would be cleaner if I simply constructed all the text in one swoop with template literals
+  //This checks the answers to each question and decides whether to include each section or not
   var readmeText = "";
   var tocSections = [];
-  console.log(`blank template is ${blankTemplate}`);
   if (data.description || blankTemplate) {
     readmeText += `\n## Description\n${data.description}\n`;
     tocSections.push("Description");
@@ -110,11 +97,16 @@ function generateMarkdown(data, blankTemplate) {
 
   if (data.license != "none" || blankTemplate) {
     readmeText += `\n${renderLicenseSection(data.license)}`;
+    tocSections.push("License");
   }
   //prepend TOC
   if (data.toc == "Yes" || blankTemplate) {
     readmeText =
       `## Table of Contents\n${constructTOC(tocSections)}\n` + readmeText;
+  }
+
+  if (data.license != "none") {
+    readmeText = `\n${renderLicenseBadge(data.license)}\n` + readmeText;
   }
   //Prepend Title
   readmeText = `# ${data.title}\n` + readmeText; //Add title
