@@ -1,9 +1,11 @@
-// TODO: Include packages needed for this application
+//Import needed libraries
 const fs = require("fs");
 const inquirer = require("inquirer");
+//This allows you to change the output location with one line
 const fileLoc = "./output/README.md";
 const generateMarkdown = require("./utils/generateMarkdown.js");
-// TODO: Create an array of questions for user input
+//This is the array of licenses that can be taken in,
+//copied verbaitm from the github website's pulldown when creating a new repo
 const licenseList = [
   "none",
   "Apache License 2.0",
@@ -20,6 +22,8 @@ const licenseList = [
   "Mozilla Public License 2.0",
   "The Unlicense",
 ];
+
+//This is the array of questions for the user to enter their info
 const questions = [
   { type: "input", message: "What is the title of this app?", name: "title" },
   {
@@ -71,6 +75,7 @@ const questions = [
   },
 ];
 
+//I made this to make generating a blank template quick and easy
 const blankTemplateWanted = [
   {
     type: "list",
@@ -81,26 +86,14 @@ const blankTemplateWanted = [
   },
 ];
 
-/*Need to get:
-Title (might be done with repository creation already)
-Description
-Table of contents
-installation
-usage
-license
-contributing (??)
-tests
-questions
-*/
-
-// TODO: Create a function to write README file
+//This actually writes the file to the output
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (err) =>
     err ? console.error(err) : console.log("Writing successful")
   );
 }
 
-// TODO: Create a function to initialize app
+//This initializes the app and gets the questions rolling
 function init() {
   console.log(
     "\n\nWelcome! You are going to be asked a series of questions to build a readme file.\n",
@@ -111,15 +104,15 @@ function init() {
     if (ans.blankTemplate === "Generate Blank Template") {
       console.log(":Entered blank path");
       let readmeText = generateMarkdown.generateMarkdown("", true);
-      writeToFile("./output/README.md", readmeText);
+      writeToFile(fileLoc, readmeText);
     } else {
       inquirer.prompt(questions).then((ans) => {
         let readmeText = generateMarkdown.generateMarkdown(ans, false);
-        writeToFile("./output/README.md", readmeText);
+        writeToFile(fileLoc, readmeText);
       });
     }
   });
 }
 
-// Function call to initialize app
+// Function call to initialize app, everything happens from this one line
 init();
